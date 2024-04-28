@@ -36,8 +36,8 @@ class _HomeState extends State<Home> {
       height: 500,
       width: 350,
       child: InteractiveViewer(
-        maxScale: 5,
-        minScale: 0.5,
+        //maxScale: 5,
+        //minScale: 0.5,
         child: Stack(
           children: [
             for (var country in widget.countries)
@@ -61,19 +61,119 @@ class _HomeState extends State<Home> {
   }
 
   Widget _getClippedImage({
-    required Clipper clipper,
-    required Color color,
-    required Country country,
-    final Function(Country country)? onCountrySelected,
-  }) {
-    return ClipPath(
-      clipper: clipper,
-      child: GestureDetector(
-        onTap: () => onCountrySelected?.call(country),
+  required Clipper clipper,
+  required Color color,
+  required Country country,
+  final Function(Country country)? onCountrySelected,
+}) {
+  return ClipPath(
+    clipper: clipper,
+    child: GestureDetector(
+      onTap: () => onCountrySelected?.call(country),
+      child: CustomPaint(
         child: Container(
           color: color,
         ),
+        foregroundPainter: _OutlinePainter(
+          color: Colors.black,
+          clipper: clipper,),
+        ),
       ),
-    );
+  );
+}
+//Made outline but broke gestureDetector
+//   Widget _getClippedImage({
+//   required Clipper clipper,
+//   required Color color,
+//   required Country country,
+//   required Function(Country) onCountrySelected,
+// }) {
+//   return GestureDetector(
+//     onTap: () => onCountrySelected(country),
+//     child: CustomPaint(
+//       painter: _OutlinePainter(clipper: clipper, color: color),
+//       child: ClipPath(
+//         clipper: clipper,
+//         child: Container(
+//           color: color,
+//         ),
+//       ),
+//     ),
+//   );
+// }
+
+  
+}
+class _StrokePainter extends CustomPainter {
+  final Color color;
+  final double strokeWidth;
+
+  _StrokePainter({required this.color, required this.strokeWidth});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = strokeWidth
+      ..style = PaintingStyle.stroke;
+
+    final path = Path()
+      ..addRect(Rect.fromLTWH(0, 0, size.width, size.height));
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class ShapePainter extends CustomPainter {
+  final Clipper clipper;
+  final Color color;
+
+  ShapePainter({required this.clipper, required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.fill;
+
+    var outlinePaint = Paint()
+      ..color = Colors.black
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0;
+
+    var path = clipper.getClip(size);
+    canvas.drawPath(path, paint);
+    canvas.drawPath(path, outlinePaint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
+  }
+}
+
+class _OutlinePainter extends CustomPainter {
+  final Clipper clipper;
+  final Color color;
+
+  _OutlinePainter({required this.clipper, required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    var path = clipper.getClip(size);
+    var paint = Paint()
+      ..color = Colors.black
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0; // adjust this value to change the outline thickness
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
   }
 }
