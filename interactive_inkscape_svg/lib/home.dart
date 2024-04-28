@@ -11,25 +11,32 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  var currentCountry;
+
+  @override
+  void initState() {
+    super.initState();
+    var currentCountry =widget.countries.firstWhere((element) => element.id == 'rightEyebrow');
+  }
+
   @override
   Widget build(BuildContext context) {
     print(widget.countries.length);
 
-    var currentCountry =
-        widget.countries.firstWhere((element) => element.id == 'rightEyebrow');
     void onCountrySelected(Country country) {
       setState(() {
         currentCountry = country;
+        print(currentCountry.name);
       });
     }
 
     return Container(
       // Widget content goes here
-      height: 300,
-      width: 300,
+      height: 500,
+      width: 500,
       child: InteractiveViewer(
         maxScale: 5,
-        minScale: 0.1,
+        minScale: 0.5,
         child: Stack(
           children: [
             for (var country in widget.countries)
@@ -39,7 +46,7 @@ class _HomeState extends State<Home> {
                 ),
                 color: Color(int.parse('FF${country.color}', radix: 16))
                     .withOpacity(currentCountry == null
-                        ? 0.8
+                        ? 0.3
                         : currentCountry.id == country.id
                             ? 1.0
                             : 0.3),
