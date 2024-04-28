@@ -27,7 +27,7 @@ class Country {
       String partPath = element.getAttribute('d').toString();
       print(partPath);
       String name = partId;
-      String color = element.getAttribute('color')?.toString() ?? '01234DF';
+      String color = element.getAttribute('color')?.toString() ?? '552200';
 
       maps.add(Country(id: partId, path: partPath, color: color, name: name));
     }

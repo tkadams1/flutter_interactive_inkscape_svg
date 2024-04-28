@@ -31,9 +31,10 @@ class _HomeState extends State<Home> {
     }
 
     return Container(
+      alignment: Alignment.center,
       // Widget content goes here
       height: 500,
-      width: 500,
+      width: 350,
       child: InteractiveViewer(
         maxScale: 5,
         minScale: 0.5,
