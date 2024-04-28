@@ -78,10 +78,10 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    var countries = Country.loadSvgImage(svgImage: 'assets/frontHeadV2.3.svg');
+    var countries = Country.loadSvgImage(svgImage: 'assets/frontHeadV2.4.svg');
     print(countries);
     return FutureBuilder<List<Country>>(
-      future: Country.loadSvgImage(svgImage: 'assets/frontHeadV2.3.svg'),
+      future: Country.loadSvgImage(svgImage: 'assets/frontHeadV2.4.svg'),
       builder: (BuildContext context, AsyncSnapshot<List<Country>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator(); // or some other widget while waiting

@@ -36,8 +36,8 @@ class _HomeState extends State<Home> {
       height: 500,
       width: 350,
       child: InteractiveViewer(
-        //maxScale: 5,
-        //minScale: 0.5,
+        maxScale: 1,
+        minScale: 1,
         child: Stack(
           children: [
             for (var country in widget.countries)
@@ -71,12 +71,13 @@ class _HomeState extends State<Home> {
     child: GestureDetector(
       onTap: () => onCountrySelected?.call(country),
       child: CustomPaint(
-        child: Container(
-          color: color,
-        ),
         foregroundPainter: _OutlinePainter(
           color: Colors.black,
           clipper: clipper,),
+        child: Container(
+          color: color,
+        ),
+        
         ),
       ),
   );

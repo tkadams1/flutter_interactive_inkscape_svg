@@ -14,9 +14,9 @@ class Clipper extends CustomClipper<Path> {
     var path = parseSvgPathData(svgPath);
     final Matrix4 matrix4 = Matrix4.identity();
 
-    matrix4.scale(0.7, 0.7);
+    matrix4.scale(1.8, 1.8);
 
-    return path.transform(matrix4.storage).shift(const Offset(0, 0));
+    return path.transform(matrix4.storage).shift(const Offset(-20, 0));
   }
 
   @override
