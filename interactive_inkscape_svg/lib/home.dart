@@ -47,7 +47,7 @@ class _HomeState extends State<Home> {
                     clipper: Clipper(
                       svgPath: country.path,
                     ),
-                    color: Color(int.parse('FF${country.color}', radix: 16))
+                    color: Color(int.parse(country.color.replaceAll("#", ""), radix: 16))
                         .withOpacity(currentCountry == null
                             ? 0.3
                             : currentCountry.id == country.id

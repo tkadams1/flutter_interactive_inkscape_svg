@@ -4,7 +4,7 @@ import 'package:xml/xml.dart';
 class Country {
   final String id;
   final String path;
-  final String color;
+  String color;
   final String name;
 
   Country(
@@ -27,11 +27,28 @@ class Country {
       String partPath = element.getAttribute('d').toString();
       print(partPath);
       String name = partId;
-      String color = element.getAttribute('color')?.toString() ?? '552200';
+      String color = getFillColor(element);
 
       maps.add(Country(id: partId, path: partPath, color: color, name: name));
     }
 
     return maps;
+  }
+
+  static String getFillColor(XmlElement element) {
+    String defaultColor = '552200';
+    String color = defaultColor;
+    String? style = element.getAttribute('style');
+    if (style != null) {
+      List<String> properties = style.split(';');
+      for (var property in properties) {
+        List<String> nameValue = property.split(':');
+        if (nameValue.length == 2 && nameValue[0].trim() == 'fill') {
+          color = nameValue[1].trim();
+          break;
+        }
+      }
+    }
+    return color;
   }
 }
