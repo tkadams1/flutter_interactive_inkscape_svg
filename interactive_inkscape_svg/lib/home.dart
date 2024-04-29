@@ -11,12 +11,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  var currentCountry;
+  List<Country> currentCountries = []; // changed to list
 
   @override
   void initState() {
     super.initState();
-    var currentCountry =widget.countries.firstWhere((element) => element.id == 'rightEyebrow');
+    currentCountries.add(widget.countries.firstWhere((element) => element.id == 'rightEyebrow'));
   }
 
   @override
@@ -25,8 +25,14 @@ class _HomeState extends State<Home> {
 
     void onCountrySelected(Country country) {
       setState(() {
-        currentCountry = country;
-        print(currentCountry.name);
+        // Add or remove country from the list
+        if (currentCountries.contains(country)) {
+          currentCountries.remove(country);
+        } else {
+          currentCountries.add(country);
+        }
+        // Print all selected countries
+        currentCountries.forEach((country) => print(country.name));
       });
     }
 
@@ -47,12 +53,10 @@ class _HomeState extends State<Home> {
                     clipper: Clipper(
                       svgPath: country.path,
                     ),
-                    color: Color(int.parse(country.color.replaceAll("#", ""), radix: 16))
-                        .withOpacity(currentCountry == null
-                            ? 0.3
-                            : currentCountry.id == country.id
-                                ? 1.0
-                                : 0.3),
+                    color: currentCountries.any((currentCountry) => currentCountry.id == country.id)
+                          ? Colors.red
+                          : Color(int.parse(country.color.replaceAll("#", ""), radix: 16)).withOpacity(1),
+                           
                     country: country,
                     onCountrySelected: onCountrySelected,
                   ),
