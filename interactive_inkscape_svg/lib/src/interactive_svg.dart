@@ -5,7 +5,7 @@ import './clipper.dart';
 class InteractiveSVG extends StatefulWidget {
   
   final String svgImage;
-  
+  final List<String> disabledSvgPieces;
   
   final double height;
   final double width;
@@ -25,6 +25,7 @@ class InteractiveSVG extends StatefulWidget {
   const InteractiveSVG(
       {super.key, 
       required this.svgImage,
+      this.disabledSvgPieces = const [],
       this.height = 500.0, 
       this.width = 350.0,
       this.maxInteractiveViewerScale = 1.0,
@@ -42,8 +43,8 @@ class InteractiveSVG extends StatefulWidget {
 }
 
 class InteractiveSVGState extends State<InteractiveSVG> {
-  List<Country> currentCountries = []; // changed to list
-  List<Country> countries = [];
+  List<svgSegment> selectedSvgPieces = []; // changed to list
+  List<svgSegment> svgPieces = [];
 
   @override
   void initState() {
@@ -51,9 +52,9 @@ class InteractiveSVGState extends State<InteractiveSVG> {
     //load the svg image and segment it into its various paths (parts)
     Future.microtask(() async {
     //load the svg image and segment it into its various paths (parts)
-    countries = await Country.loadSvgImage(svgImage: widget.svgImage);
-    currentCountries.add(
-        countries.firstWhere((element) => element.id == 'rightEyebrow'));
+    svgPieces = await svgSegment.loadSvgImage(svgImage: widget.svgImage);
+    // selectedSvgPieces.add(
+    //     countries.firstWhere((element) => element.id == 'rightEyebrow'));
     setState(() {}); // Call setState to trigger a rebuild of the widget
   });
   }
@@ -62,16 +63,16 @@ class InteractiveSVGState extends State<InteractiveSVG> {
   Widget build(BuildContext context) {
     //print(widget.countries.length);
 
-    void onCountrySelected(Country country) {
+    void onSVGPieceSelect(svgSegment svgPiece) {
       setState(() {
-        // Add or remove country from the list
-        if (currentCountries.contains(country)) {
-          currentCountries.remove(country);
+        // Add or remove svgSegment from the list
+        if (selectedSvgPieces.contains(svgPiece)) {
+          selectedSvgPieces.remove(svgPiece);
         } else {
-          currentCountries.add(country);
+          selectedSvgPieces.add(svgPiece);
         }
         // Print all selected countries
-        currentCountries.forEach((country) => print(country.name));
+        selectedSvgPieces.forEach((svgPiece) => print(svgPiece.name));
       });
     }
 
@@ -88,23 +89,23 @@ class InteractiveSVGState extends State<InteractiveSVG> {
             child: Stack(
               children: [
                 //loop through the svg parts and create a clipped image for each
-                for (var country in countries)
+                for (var svgPiece in svgPieces)
                   _getClippedImage(
                     clipper: Clipper(
-                      svgPath: country.path,
+                      svgPath: svgPiece.path,
                       scaleX: widget.scaleX,
                       scaleY: widget.scaleY,
                       offsetX: widget.offsetX,
                       offsetY: widget.offsetY,
                     ),
-                    color: currentCountries.any(
-                            (currentCountry) => currentCountry.id == country.id)
+                    color: selectedSvgPieces.any(
+                            (currentCountry) => currentCountry.id == svgPiece.id)
                         ? widget.selectedColor
-                        : Color(int.parse(country.color.replaceAll("#", ""),
+                        : Color(int.parse(svgPiece.color.replaceAll("#", ""),
                                 radix: 16))
                             .withOpacity(1),
-                    country: country,
-                    onCountrySelected: onCountrySelected,
+                    svgPiece: svgPiece,
+                    onSVGPieceSelect: onSVGPieceSelect,
                   ),
               ],
             ),
@@ -117,13 +118,13 @@ class InteractiveSVGState extends State<InteractiveSVG> {
   Widget _getClippedImage({
     required Clipper clipper,
     required Color color,
-    required Country country,
-    final Function(Country country)? onCountrySelected,
+    required svgSegment svgPiece,
+    final Function(svgSegment country)? onSVGPieceSelect,
   }) {
     return ClipPath(
       clipper: clipper,
       child: GestureDetector(
-        onTap: () => onCountrySelected?.call(country),
+        onTap: () => onSVGPieceSelect?.call(svgPiece),
         child: CustomPaint(
           foregroundPainter: _OutlinePainter(
             color: widget.outlineColor,

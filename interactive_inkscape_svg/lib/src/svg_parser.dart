@@ -1,20 +1,20 @@
 import 'package:flutter/services.dart';
 import 'package:xml/xml.dart';
 
-class Country {
+class svgSegment {
   final String id;
   final String path;
   String color;
   final String name;
 
-  Country(
+  svgSegment(
       {required this.id,
       required this.path,
       required this.color,
       required this.name});
 
-  static Future<List<Country>> loadSvgImage({required String svgImage}) async {
-    List<Country> maps = [];
+  static Future<List<svgSegment>> loadSvgImage({required String svgImage}) async {
+    List<svgSegment> maps = [];
     String generalString = await rootBundle.loadString(svgImage);
 
     XmlDocument document = XmlDocument.parse(generalString);
@@ -29,7 +29,7 @@ class Country {
       String name = partId;
       String color = getFillColor(element);
 
-      maps.add(Country(id: partId, path: partPath, color: color, name: name));
+      maps.add(svgSegment(id: partId, path: partPath, color: color, name: name));
     }
 
     return maps;
