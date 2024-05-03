@@ -1,4 +1,4 @@
-name: interactive_inkscape_svg
+name: interactive_inkscape_svg_example
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -37,6 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.6
   xml: ^6.3.0
   path_drawing: ^1.0.1
+  interactive_inkscape_svg:
+    path: ../
 
 dev_dependencies:
   flutter_test:

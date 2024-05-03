@@ -5,7 +5,6 @@ import './clipper.dart';
 class InteractiveSVG extends StatefulWidget {
   
   final String svgImage;
-  final List<Country> countries;
   
   
   final double height;
@@ -26,7 +25,6 @@ class InteractiveSVG extends StatefulWidget {
   const InteractiveSVG(
       {super.key, 
       required this.svgImage,
-      required this.countries, 
       this.height = 500.0, 
       this.width = 350.0,
       this.maxInteractiveViewerScale = 1.0,
@@ -48,12 +46,16 @@ class InteractiveSVGState extends State<InteractiveSVG> {
   List<Country> countries = [];
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
+    //load the svg image and segment it into its various paths (parts)
+    Future.microtask(() async {
     //load the svg image and segment it into its various paths (parts)
     countries = await Country.loadSvgImage(svgImage: widget.svgImage);
     currentCountries.add(
-        widget.countries.firstWhere((element) => element.id == 'rightEyebrow'));
+        countries.firstWhere((element) => element.id == 'rightEyebrow'));
+    setState(() {}); // Call setState to trigger a rebuild of the widget
+  });
   }
 
   @override
@@ -86,7 +88,7 @@ class InteractiveSVGState extends State<InteractiveSVG> {
             child: Stack(
               children: [
                 //loop through the svg parts and create a clipped image for each
-                for (var country in widget.countries)
+                for (var country in countries)
                   _getClippedImage(
                     clipper: Clipper(
                       svgPath: country.path,

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:interactive_inkscape_svg/home.dart';
-import 'package:interactive_inkscape_svg/svg_parser.dart';
-import 'package:interactive_inkscape_svg_test.dart';
+import 'home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -73,41 +71,24 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    var countries = Country.loadSvgImage(svgImage: 'assets/frontHeadV2.4.svg');
-    print(countries);
-    return FutureBuilder<List<Country>>(
-      future: Country.loadSvgImage(svgImage: 'assets/frontHeadV2.4.svg'),
-      builder: (BuildContext context, AsyncSnapshot<List<Country>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // or some other widget while waiting
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else {
-          return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-              title: Text(widget.title),
-            ),
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-
-                  Home(
-                    countries: snapshot.data!,
-                  )
-                ],
-              ),
-            ),
-          );
-        }
-      },
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+      ),
+      body: const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Home(),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
