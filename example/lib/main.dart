@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:interactive_inkscape_svg/home.dart';
-import 'package:interactive_inkscape_svg/base.dart';
+import 'package:interactive_inkscape_svg/svg_parser.dart';
+import 'package:interactive_inkscape_svg_test.dart';
 
 void main() {
   runApp(const MyApp());
@@ -97,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+
                   Home(
                     countries: snapshot.data!,
                   )

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:interactive_inkscape_svg/base.dart';
+import 'package:interactive_inkscape_svg/svg_parser.dart';
 import 'package:interactive_inkscape_svg/clipper.dart';
 
 class Home extends StatefulWidget {
