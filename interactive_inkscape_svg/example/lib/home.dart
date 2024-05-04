@@ -36,6 +36,9 @@ class _HomeState extends State<Home> {
         InteractiveSVG(
           key: ValueKey(svgImage),
           svgImage: svgImage,
+          enabledSvgPieces: selectedValue == 'front'
+              ? selectedFrontPieces
+              : selectedBackPieces,
           disabledSvgPieces: disabledPieces,
           onPieceSelected: _getSelectedPieces,
           height: 475.0,
@@ -55,6 +58,7 @@ class _HomeState extends State<Home> {
     }
     selectedPieces = selectedFrontPieces + selectedBackPieces;
     setState(() {});
+    print(selectedPieces);
   }
 
   Widget _buildFrontBackButton() {

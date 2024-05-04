@@ -23,9 +23,7 @@ class svgSegment {
 
     for (var element in paths) {
       String partId = element.getAttribute('id').toString();
-      print(partId);
       String partPath = element.getAttribute('d').toString();
-      print(partPath);
       String name = partId;
       String color = getFillColor(element);
 

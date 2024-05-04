@@ -5,6 +5,7 @@ import './clipper.dart';
 class InteractiveSVG extends StatefulWidget {
   
   final String svgImage;
+  final List<String> enabledSvgPieces;
   final List<String> disabledSvgPieces;
   final Function? onPieceSelected;
   
@@ -28,6 +29,7 @@ class InteractiveSVG extends StatefulWidget {
       {super.key, 
       required this.svgImage,
       this.containerDecoration,
+      this.enabledSvgPieces = const [],
       this.disabledSvgPieces = const [],
       this.onPieceSelected,
       this.height = 500.0, 
@@ -47,8 +49,14 @@ class InteractiveSVG extends StatefulWidget {
 }
 
 class InteractiveSVGState extends State<InteractiveSVG> {
-  List<svgSegment> selectedSvgPieces = []; // changed to list
+  
+  //List of all svg pieces
   List<svgSegment> svgPieces = [];
+  //List of selected svg pieces with its segment data.
+  List<svgSegment> selectedSvgPieces = [];
+  //Imported svg pieces are ones that were previously selected and are stored outside this package.  This allows us to maintain the selected pieces when the svg is reloaded.
+  List<String> importedEnabledSvgPieces = [];
+  
 
   @override
   void initState() {
@@ -59,8 +67,16 @@ class InteractiveSVGState extends State<InteractiveSVG> {
     svgPieces = await svgSegment.loadSvgImage(svgImage: widget.svgImage);
     // selectedSvgPieces.add(
     //     countries.firstWhere((element) => element.id == 'rightEyebrow'));
+    importedEnabledSvgPieces = widget.enabledSvgPieces;
+    addExistingEnabledSvgPieces();
     setState(() {}); // Call setState to trigger a rebuild of the widget
-  });
+    });
+  }
+  // This is used to add the enabledSvgPieces to the selectedSvgPieces list because, otherwise when we switch reload this svg the selectedSvgPieces list will be empty
+  void addExistingEnabledSvgPieces() {
+    // Add the enabledSvgPieces to the selectedSvgPieces list
+    selectedSvgPieces.addAll(svgPieces
+        .where((element) => importedEnabledSvgPieces.contains(element.id)));
   }
 
   @override
