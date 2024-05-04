@@ -6,6 +6,7 @@ class InteractiveSVG extends StatefulWidget {
   
   final String svgImage;
   final List<String> disabledSvgPieces;
+  final Function? onPieceSelected;
   
   final double height;
   final double width;
@@ -26,6 +27,7 @@ class InteractiveSVG extends StatefulWidget {
       {super.key, 
       required this.svgImage,
       this.disabledSvgPieces = const [],
+      this.onPieceSelected,
       this.height = 500.0, 
       this.width = 350.0,
       this.maxInteractiveViewerScale = 1.0,
@@ -64,6 +66,15 @@ class InteractiveSVGState extends State<InteractiveSVG> {
     //print(widget.countries.length);
 
     void onSVGPieceSelect(svgSegment svgPiece) {
+      // Check if the cosvgPiece is disabled
+      if (widget.disabledSvgPieces.contains(svgPiece.id)) {
+        return;
+      }
+      // Sends the list of selected countries to the parent widget
+      if (widget.onPieceSelected != null) {
+        widget.onPieceSelected!(selectedSvgPieces);
+        return;
+      }
       setState(() {
         // Add or remove svgSegment from the list
         if (selectedSvgPieces.contains(svgPiece)) {
