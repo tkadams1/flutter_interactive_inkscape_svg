@@ -21,13 +21,16 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    String svgImageFront = 'assets/frontHeadV2.4.svg';
+    String svgImageFront = 'assets/frontHeadV3.1.svg';
     String svgImageBack = 'assets/backHeadV1.svg';
     List<String> disabledPieces = [
       'rightEyebrow',
       'leftEyebrow',
       'leftEar',
-      'rightEar'
+      'rightEar',
+      'innerRightEar',
+      'innerLeftEar',
+      'noseBridge',
     ];
     String svgImage = selectedValue == 'front' ? svgImageFront : svgImageBack;
 
