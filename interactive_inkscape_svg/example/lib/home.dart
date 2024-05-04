@@ -38,6 +38,9 @@ class _HomeState extends State<Home> {
           svgImage: svgImage,
           disabledSvgPieces: disabledPieces,
           onPieceSelected: _getSelectedPieces,
+          height: 475.0,
+          width: MediaQuery.of(context).size.width,
+          offsetX: 5,
         ),
         _buildFrontBackButton(),
       ],
@@ -45,17 +48,13 @@ class _HomeState extends State<Home> {
   }
 
   void _getSelectedPieces(List<String> selectedPieces) {
-    if (selectedValue == 'back') {
+    if (selectedValue == 'front') {
       selectedFrontPieces = selectedPieces;
     } else {
       selectedBackPieces = selectedPieces;
     }
-    setState(() {});
     selectedPieces = selectedFrontPieces + selectedBackPieces;
-    print("Selected Pieces");
-    print(selectedFrontPieces);
-    print("Selected Pieces");
-    print(selectedBackPieces);
+    setState(() {});
   }
 
   Widget _buildFrontBackButton() {

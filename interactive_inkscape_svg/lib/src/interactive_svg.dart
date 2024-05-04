@@ -8,6 +8,7 @@ class InteractiveSVG extends StatefulWidget {
   final List<String> disabledSvgPieces;
   final Function? onPieceSelected;
   
+  final BoxDecoration? containerDecoration;
   final double height;
   final double width;
   final double maxInteractiveViewerScale;
@@ -26,6 +27,7 @@ class InteractiveSVG extends StatefulWidget {
   const InteractiveSVG(
       {super.key, 
       required this.svgImage,
+      this.containerDecoration,
       this.disabledSvgPieces = const [],
       this.onPieceSelected,
       this.height = 500.0, 
@@ -35,7 +37,7 @@ class InteractiveSVG extends StatefulWidget {
       this.selectedColor = Colors.red,
       this.scaleX = 1.8,
       this.scaleY = 1.8,
-      this.offsetX = -20,
+      this.offsetX = 0,
       this.offsetY = 0,
       this.outlineColor = Colors.black,
       this.outlineWidth = 2.0,
@@ -87,42 +89,40 @@ class InteractiveSVGState extends State<InteractiveSVG> {
       });
     }
 
-    return Column(
-      children: [
-        Container(
-          alignment: Alignment.center,
-          // Widget content goes here
-          height: widget.height,
-          width: widget.width,
-          child: InteractiveViewer(
-            maxScale: widget.maxInteractiveViewerScale,
-            minScale: widget.minInteractiveViewerScale,
-            child: Stack(
-              children: [
-                //loop through the svg parts and create a clipped image for each
-                for (var svgPiece in svgPieces)
-                  _getClippedImage(
-                    clipper: Clipper(
-                      svgPath: svgPiece.path,
-                      scaleX: widget.scaleX,
-                      scaleY: widget.scaleY,
-                      offsetX: widget.offsetX,
-                      offsetY: widget.offsetY,
-                    ),
-                    color: selectedSvgPieces.any(
-                            (currentCountry) => currentCountry.id == svgPiece.id)
-                        ? widget.selectedColor
-                        : Color(int.parse(svgPiece.color.replaceAll("#", ""),
-                                radix: 16))
-                            .withOpacity(1),
-                    svgPiece: svgPiece,
-                    onSVGPieceSelect: onSVGPieceSelect,
-                  ),
-              ],
-            ),
-          ),
+    return Container(
+      decoration: widget.containerDecoration,
+      //alignment: Alignment.center,
+      // Widget content goes here
+      height: widget.height,
+      width: widget.width,
+      child: InteractiveViewer(
+        maxScale: widget.maxInteractiveViewerScale,
+        minScale: widget.minInteractiveViewerScale,
+        alignment: Alignment.center,
+        child: Stack(
+          children: [
+            //loop through the svg parts and create a clipped image for each
+            for (var svgPiece in svgPieces)
+              _getClippedImage(
+                clipper: Clipper(
+                  svgPath: svgPiece.path,
+                  scaleX: widget.scaleX,
+                  scaleY: widget.scaleY,
+                  offsetX: widget.offsetX,
+                  offsetY: widget.offsetY,
+                ),
+                color: selectedSvgPieces.any(
+                        (currentCountry) => currentCountry.id == svgPiece.id)
+                    ? widget.selectedColor
+                    : Color(int.parse(svgPiece.color.replaceAll("#", ""),
+                            radix: 16))
+                        .withOpacity(1),
+                svgPiece: svgPiece,
+                onSVGPieceSelect: onSVGPieceSelect,
+              ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
