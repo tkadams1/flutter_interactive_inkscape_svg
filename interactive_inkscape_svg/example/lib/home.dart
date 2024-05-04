@@ -9,7 +9,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<String> selectedPieces = ['rightEye', 'leftEye', 'nose', 'mouth'];
+  List<String> selectedFrontPieces = [];
+  List<String> selectedBackPieces = [];
+  List<String> selectedPieces = [];
   String selectedValue = 'front';
 
   @override
@@ -29,13 +31,13 @@ class _HomeState extends State<Home> {
     ];
     String svgImage = selectedValue == 'front' ? svgImageFront : svgImageBack;
 
-
     return Column(
       children: [
         InteractiveSVG(
           key: ValueKey(svgImage),
           svgImage: svgImage,
           disabledSvgPieces: disabledPieces,
+          onPieceSelected: _getSelectedPieces,
         ),
         _buildFrontBackButton(),
       ],
@@ -43,9 +45,17 @@ class _HomeState extends State<Home> {
   }
 
   void _getSelectedPieces(List<String> selectedPieces) {
-    setState(() {
-      this.selectedPieces = selectedPieces;
-    });
+    if (selectedValue == 'back') {
+      selectedFrontPieces = selectedPieces;
+    } else {
+      selectedBackPieces = selectedPieces;
+    }
+    setState(() {});
+    selectedPieces = selectedFrontPieces + selectedBackPieces;
+    print("Selected Pieces");
+    print(selectedFrontPieces);
+    print("Selected Pieces");
+    print(selectedBackPieces);
   }
 
   Widget _buildFrontBackButton() {

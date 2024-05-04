@@ -70,11 +70,6 @@ class InteractiveSVGState extends State<InteractiveSVG> {
       if (widget.disabledSvgPieces.contains(svgPiece.id)) {
         return;
       }
-      // Sends the list of selected countries to the parent widget
-      if (widget.onPieceSelected != null) {
-        widget.onPieceSelected!(selectedSvgPieces);
-        return;
-      }
       setState(() {
         // Add or remove svgSegment from the list
         if (selectedSvgPieces.contains(svgPiece)) {
@@ -82,8 +77,13 @@ class InteractiveSVGState extends State<InteractiveSVG> {
         } else {
           selectedSvgPieces.add(svgPiece);
         }
+        // Sends the list of selected countries to the parent widget
+      if (widget.onPieceSelected != null) {
+        widget.onPieceSelected!(selectedSvgPieces.map((e) => e.id).toList());
+        return;
+      }
         // Print all selected countries
-        selectedSvgPieces.forEach((svgPiece) => print(svgPiece.name));
+        //selectedSvgPieces.forEach((svgPiece) => print(svgPiece.name));
       });
     }
 
