@@ -12,7 +12,7 @@ class Clipper extends CustomClipper<Path> {
     required this.svgPath,
     this.scaleX = 1.8,
     this.scaleY = 1.8,
-    this.offsetX = -20,
+    this.offsetX = 0,
     this.offsetY = 0,
   });
 

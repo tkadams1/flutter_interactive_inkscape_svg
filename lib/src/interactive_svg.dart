@@ -17,8 +17,7 @@ class InteractiveSVG extends StatefulWidget {
 
   final Color selectedColor;
   //values for Clipper
-  final double scaleX;
-  final double scaleY;
+  final double scaleMultiplier;
   final double offsetX;
   final double offsetY;
 
@@ -32,13 +31,12 @@ class InteractiveSVG extends StatefulWidget {
       this.enabledSvgPieces = const [],
       this.disabledSvgPieces = const [],
       this.onPieceSelected,
-      this.height = 500.0, 
-      this.width = 350.0,
+      this.height = 255.0, 
+      this.width = 215.0,
       this.maxInteractiveViewerScale = 1.0,
       this.minInteractiveViewerScale = 1.0,
       this.selectedColor = Colors.red,
-      this.scaleX = 1.8,
-      this.scaleY = 1.8,
+      this.scaleMultiplier = 1.0,
       this.offsetX = 0,
       this.offsetY = 0,
       this.outlineColor = Colors.black,
@@ -109,21 +107,18 @@ class InteractiveSVGState extends State<InteractiveSVG> {
       decoration: widget.containerDecoration,
       //alignment: Alignment.center,
       // Widget content goes here
-      height: widget.height,
-      width: widget.width,
-      child: InteractiveViewer(
-        maxScale: widget.maxInteractiveViewerScale,
-        minScale: widget.minInteractiveViewerScale,
-        alignment: Alignment.center,
-        child: Stack(
-          children: [
-            //loop through the svg parts and create a clipped image for each
-            for (var svgPiece in svgPieces)
-              _getClippedImage(
+      height: widget.height * widget.scaleMultiplier,
+      width: widget.width * widget.scaleMultiplier,
+      child: Stack(
+        children: [
+          //loop through the svg parts and create a clipped image for each
+          for (var svgPiece in svgPieces)
+            Container(
+              child: _getClippedImage(
                 clipper: Clipper(
                   svgPath: svgPiece.path,
-                  scaleX: widget.scaleX,
-                  scaleY: widget.scaleY,
+                  scaleX: widget.scaleMultiplier,
+                  scaleY: widget.scaleMultiplier,
                   offsetX: widget.offsetX,
                   offsetY: widget.offsetY,
                 ),
@@ -136,8 +131,8 @@ class InteractiveSVGState extends State<InteractiveSVG> {
                 svgPiece: svgPiece,
                 onSVGPieceSelect: onSVGPieceSelect,
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }

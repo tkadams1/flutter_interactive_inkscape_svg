@@ -33,10 +33,20 @@ class _HomeState extends State<Home> {
       'noseBridge',
     ];
     String svgImage = selectedValue == 'front' ? svgImageFront : svgImageBack;
+    const scaleMultiplier = 1.6;
+    const originalHeight = 255.0;
+    const originalWidth = 215.0;
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         InteractiveSVG(
+          containerDecoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.black,
+              width: 2.0,
+            ),
+          ),
           key: ValueKey(svgImage),
           svgImage: svgImage,
           enabledSvgPieces: selectedValue == 'front'
@@ -44,9 +54,10 @@ class _HomeState extends State<Home> {
               : selectedBackPieces,
           disabledSvgPieces: disabledPieces,
           onPieceSelected: _getSelectedPieces,
-          height: 475.0,
-          width: MediaQuery.of(context).size.width,
-          offsetX: 5,
+          height: originalHeight,
+          width: originalWidth,
+          scaleMultiplier: scaleMultiplier,   
+          offsetX: 0,
         ),
         _buildFrontBackButton(),
       ],
