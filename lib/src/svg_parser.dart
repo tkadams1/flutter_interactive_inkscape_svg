@@ -32,6 +32,13 @@ class svgSegment {
 
     return maps;
   }
+  //Returns the names of the paths in the SVG file
+  static Future<List<String>> getSvgPathNames(String svgImage) async {
+    List<String> pathNames = [];
+    var paths = await svgSegment.loadSvgImage(svgImage: svgImage);
+    pathNames = paths.map((e) => e.name).toList();
+  return pathNames;
+}
 
   static String getFillColor(XmlElement element) {
     String defaultColor = '552200';

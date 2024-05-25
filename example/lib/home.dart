@@ -13,16 +13,34 @@ class _HomeState extends State<Home> {
   List<String> selectedBackPieces = [];
   List<String> selectedPieces = [];
   String selectedValue = 'front';
+  Future<List<String>>? test;
+  String svgImageFront = 'assets/frontHeadV3.1.svg';
+  String svgImageBack = 'assets/backHeadV1.svg';
+  List<String> frontPieces = [];
+  List<String> backPieces = [];
 
   @override
   void initState() {
     super.initState();
+
+    //These functions are used to get the names of the paths in the SVG file before the widget is built
+    svgSegment.getSvgPathNames(svgImageFront).then((value) {
+    setState(() {
+      frontPieces = value;
+    });
+    print(frontPieces);
+  });
+
+   svgSegment.getSvgPathNames(svgImageBack).then((value) {
+    setState(() {
+      backPieces = value;
+    });
+    print(backPieces);
+  });
   }
 
   @override
   Widget build(BuildContext context) {
-    String svgImageFront = 'assets/frontHeadV3.1.svg';
-    String svgImageBack = 'assets/backHeadV1.svg';
     List<String> disabledPieces = [
       'rightEyebrow',
       'leftEyebrow',
@@ -33,6 +51,7 @@ class _HomeState extends State<Home> {
       'noseBridge',
     ];
     String svgImage = selectedValue == 'front' ? svgImageFront : svgImageBack;
+
     const scaleMultiplier = 1.6;
     const originalHeight = 255.0;
     const originalWidth = 215.0;
@@ -56,7 +75,7 @@ class _HomeState extends State<Home> {
           onPieceSelected: _getSelectedPieces,
           height: originalHeight,
           width: originalWidth,
-          scaleMultiplier: scaleMultiplier,   
+          scaleMultiplier: scaleMultiplier,
           offsetX: 0,
         ),
         _buildFrontBackButton(),
